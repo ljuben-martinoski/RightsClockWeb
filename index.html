@@ -1,0 +1,126 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RightsClock — Know your exact consumer-rights deadline.</title>
+<meta name="description" content="Cited, maintained EU consumer-rights data for Germany, Austria and the Netherlands, as a REST API.">
+<link rel="stylesheet" href="style.css">
+
+<header>
+  <a class="wordmark" href="/">RightsClock</a>
+  <nav>
+    <a href="#demo">Demo</a>
+    <a href="#trust">Trust</a>
+    <a href="#pricing">Pricing</a>
+  </nav>
+</header>
+
+<main>
+
+  <section id="hero">
+    <h1>Know your exact consumer-rights deadline.</h1>
+    <p class="subhead">
+      Cited, maintained EU consumer-rights data for Germany, Austria and the
+      Netherlands — with an honest, explicit error for everything we don't yet model.
+    </p>
+
+    <!-- Request/response are real: the response below is the API's pinned OpenAPI
+         example (app/api/examples.py), which a test asserts byte-for-byte against
+         what POSTing this exact request returns. Regenerate it here if that test
+         ever forces a change on the API side. -->
+    <div class="code-grid">
+      <figure>
+        <figcaption>Request</figcaption>
+        <pre><code>curl -X POST https://api.rightsclock.eu/v1/rights \
+  -H "Content-Type: application/json" \
+  -d '{"buyer_country":"DE",
+       "channel":"online",
+       "contract_type":"goods",
+       "product_category":"electronics",
+       "purchase_date":"2026-06-05",
+       "delivery_date":"2026-06-08"}'</code></pre>
+      </figure>
+
+      <figure>
+        <figcaption>Response</figcaption>
+        <pre><code>{
+  "disclaimer": "Legal information, not legal advice. Verify with a qualified source before relying on a deadline.",
+  "rights": [
+    {
+      "right_type": "withdrawal",
+      "applies": true,
+      "duration_days": 14,
+      "duration_years": null,
+      "start_date": "2026-06-08",
+      "deadline_date": "2026-06-22",
+      "explanation": "You may cancel a distance or off-premises purchase within 14 days of receiving the goods, without giving any reason.",
+      "source": "BGB §§ 312g, 355, 356 (implementing Directive 2011/83/EU, Art. 9); rollover per BGB § 193",
+      "jurisdiction": "DE",
+      "last_reviewed": "2026-07-12",
+      "notes": null
+    },
+    {
+      "right_type": "legal_guarantee",
+      "applies": true,
+      "duration_days": null,
+      "duration_years": 2,
+      "start_date": "2026-06-08",
+      "deadline_date": "2028-06-08",
+      "explanation": "For two years from delivery, the seller is liable for defects (Sachmängel). You may demand repair or replacement first; price reduction or withdrawal from the contract if that fails.",
+      "source": "BGB §§ 434, 437, 438(2) (implementing Directive (EU) 2019/771)",
+      "jurisdiction": "DE",
+      "last_reviewed": "2026-07-12",
+      "notes": "Defects appearing within the first 12 months are presumed to have existed at delivery (BGB § 477)."
+    }
+  ]
+}</code></pre>
+      </figure>
+    </div>
+
+    <p>
+      <a class="cta" href="https://api.rightsclock.eu/docs">Try it live →</a>
+    </p>
+  </section>
+
+  <section id="demo">
+    <h2>Try it</h2>
+    <!-- interactive demo form wired in a later brief -->
+  </section>
+
+  <section id="trust">
+    <h2>How we keep this correct.</h2>
+    <p>
+      Every rule is traced to a named statute and carries the date a human last
+      checked it against the current text of the law. The full dataset is reviewed
+      quarterly, and CI fails the build if any rule drifts past its review window —
+      stale legal data is treated as a broken build, not a stale page. Where a
+      country or scenario isn't modelled yet, the API returns an explicit error
+      instead of an answer inferred from another country's rules.
+    </p>
+
+    <!-- Hardcoded default is the source of truth if the fetch fails; script.js
+         upgrades it to the live value. Keep this date in sync with the dataset. -->
+    <p id="freshness-date">Legal data last reviewed: 2026-07-12</p>
+
+    <!-- TODO: point at the published LEGAL_DATA.md (lives in the RightsClockAPI repo). -->
+    <p><a href="#">Read our data-governance process</a></p>
+  </section>
+
+  <section id="pricing">
+    <h2>Pricing</h2>
+    <p>Free while in preview.</p>
+    <!-- full tiers later -->
+  </section>
+
+</main>
+
+<footer>
+  <p><strong>Legal information, not legal advice.</strong></p>
+  <nav>
+    <!-- Drafts pending the UG formation — do not link publicly until reviewed. -->
+    <a href="#">Impressum</a>
+    <a href="#">Datenschutzerklärung</a>
+    <a href="#">Terms</a>
+  </nav>
+  <p class="copyright">© 2026 RightsClock</p>
+</footer>
+
+<script src="script.js"></script>
