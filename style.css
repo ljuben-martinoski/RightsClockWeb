@@ -1,12 +1,33 @@
-/* Skeleton styling only: legible defaults, no colour-scheme decisions yet.
-   The visual design lands in a later brief — resist adding polish here. */
+/* RightsClock — landing page styles.
+   Plain CSS: no build step, no preprocessor, no imported font, nothing fetched
+   from a CDN. The page must keep working as files opened straight from disk.
+
+   Design intent: this should read like infrastructure documentation, not
+   marketing. Near-monochrome ink on white, one deep-navy accent used only where
+   something is actually actionable, generous whitespace, hairline borders.
+   Restraint is the message — the product's claim is carefulness. */
 
 :root {
-  --content-width: 720px;
-  --ink: #1a1a1a;
-  --ink-muted: #555;
-  --rule: #ddd;
-  --surface: #f6f6f6;
+  /* Two measures. Prose sits at a comfortable reading width; only the code
+     panes break out wider. That single break is the page's one emphasis. */
+  --measure: 720px;
+  --measure-wide: 960px;
+  --pad: 1.5rem;
+
+  --bg: #ffffff;
+  --surface: #f7f8fa;
+  --ink: #14171c;
+  --ink-code: #22262e;
+  --ink-muted: #5a6472;
+  --rule: #e2e5ea;
+
+  /* Deep navy: sober, institutional, and legible. All pairings below were
+     checked against WCAG AA — the lightest is 5.65:1, most are past AAA. */
+  --accent: #1b3f77;
+  --accent-strong: #14305c;
+
+  --radius: 8px;
+  --radius-sm: 6px;
 }
 
 *,
@@ -16,146 +37,311 @@
 }
 
 body {
-  margin: 0 auto;
-  padding: 2rem 1rem 4rem;
-  max-width: var(--content-width);
+  margin: 0;
+  padding-inline: var(--pad);
+  background: var(--bg);
+  color: var(--ink);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     "Helvetica Neue", Arial, sans-serif;
   font-size: 1rem;
-  line-height: 1.6;
-  color: var(--ink);
+  line-height: 1.65;
 }
 
 h1,
 h2 {
-  line-height: 1.25;
   text-wrap: balance;
+  letter-spacing: -0.018em;
 }
 
 h1 {
-  font-size: 2rem;
-  margin-bottom: 0.5rem;
+  font-size: clamp(2rem, 1.4rem + 2.4vw, 2.75rem);
+  line-height: 1.15;
+  margin-block: 0 1rem;
+}
+
+h2 {
+  font-size: 1.4375rem;
+  line-height: 1.3;
+  margin-block: 0 1rem;
+}
+
+p {
+  margin-block: 0 1rem;
 }
 
 a {
-  color: inherit;
+  color: var(--accent);
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
 }
 
-/* --- header ---------------------------------------------------------- */
+a:hover {
+  color: var(--accent-strong);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* --- header ----------------------------------------------------------- */
 
 header {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
   justify-content: space-between;
-  gap: 1rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid var(--rule);
+  gap: 0.5rem 1.5rem;
+  max-width: var(--measure);
+  margin-inline: auto;
+  padding-block: 1.75rem;
+  border-block-end: 1px solid var(--rule);
 }
 
 .wordmark {
-  font-weight: 700;
-  font-size: 1.125rem;
+  font-size: 1.0625rem;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  color: var(--ink);
   text-decoration: none;
 }
 
 header nav {
   display: flex;
-  gap: 1rem;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  font-size: 0.9375rem;
 }
 
-/* --- sections -------------------------------------------------------- */
+header nav a {
+  color: var(--ink-muted);
+  text-decoration: none;
+}
 
+header nav a:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+/* --- section rhythm ---------------------------------------------------- */
+
+/* Sections span the full width so the code panes can break out; their children
+   are what gets centred and constrained. */
 section {
-  padding: 2.5rem 0;
-  border-bottom: 1px solid var(--rule);
+  padding-block: 4.5rem;
+  scroll-margin-block-start: 1.5rem;
 }
+
+section > * {
+  max-width: var(--measure);
+  margin-inline: auto;
+}
+
+section > .code-grid {
+  max-width: var(--measure-wide);
+}
+
+/* Divider drawn as a pseudo-element so it aligns to the prose measure rather
+   than to the full-width section box. */
+section + section {
+  padding-block-start: 0;
+}
+
+section + section::before {
+  content: "";
+  display: block;
+  max-width: var(--measure);
+  margin-inline: auto;
+  margin-block-end: 4.5rem;
+  border-block-start: 1px solid var(--rule);
+}
+
+/* --- hero -------------------------------------------------------------- */
 
 .subhead {
-  font-size: 1.125rem;
+  font-size: 1.1875rem;
+  line-height: 1.55;
   color: var(--ink-muted);
-  margin-top: 0;
+  margin-block: 0 2.5rem;
 }
 
-/* --- request / response panes ---------------------------------------- */
+/* --- request / response panes ------------------------------------------ */
 
 .code-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-  margin: 2rem 0;
+  align-items: start; /* panes keep their natural height instead of stretching */
+  gap: 1.25rem;
+  margin-block: 2.5rem;
 }
 
-@media (max-width: 640px) {
-  .code-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-.code-grid figure {
+.pane {
   margin: 0;
-  min-width: 0; /* lets the pre scroll instead of blowing out the grid track */
+  min-width: 0; /* lets a pane shrink inside its grid track */
 }
 
-.code-grid figcaption {
-  font-size: 0.75rem;
+.pane figcaption {
+  font-size: 0.6875rem;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
   color: var(--ink-muted);
-  margin-bottom: 0.375rem;
+  margin-block-end: 0.5rem;
 }
 
 pre {
   margin: 0;
-  padding: 0.75rem;
+  padding: 0.875rem 1rem;
   background: var(--surface);
   border: 1px solid var(--rule);
-  border-radius: 4px;
-  overflow: auto;
-  /* The real response is long. Capping the height keeps the hero scannable
-     without truncating the JSON into something that isn't what the API returns. */
-  max-height: 22rem;
+  border-radius: var(--radius);
+  overflow: hidden;
 }
 
 code {
   font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
     "Liberation Mono", monospace;
   font-size: 0.8125rem;
-  line-height: 1.5;
-  white-space: pre;
+  line-height: 1.6;
+  color: var(--ink-code);
+  /* The legal strings run past 120 characters; no page width makes them fit a
+     half-column. Wrapping beats a horizontal scrollbar in a hero, and it is
+     purely presentational — the JSON is byte-accurate either way. */
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
 }
 
-/* --- call to action --------------------------------------------------- */
+/* Truncated pane: the code block and the disclosure link below it read as one
+   object, joined by a dashed seam that signals "continues". */
+.pane.is-truncated pre {
+  border-block-end: 0;
+  border-end-start-radius: 0;
+  border-end-end-radius: 0;
+}
+
+.more {
+  display: block;
+  padding: 0.625rem 1rem;
+  background: var(--bg);
+  border: 1px solid var(--rule);
+  border-block-start: 1px dashed var(--rule);
+  border-end-start-radius: var(--radius);
+  border-end-end-radius: var(--radius);
+  /* Deliberately sans-serif, not monospace: this is our annotation, not part of
+     the payload, and it should never be mistaken for returned JSON. */
+  font-size: 0.8125rem;
+  font-weight: 550;
+  text-decoration: none;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.more:hover {
+  background: var(--surface);
+}
+
+/* --- call to action ----------------------------------------------------- */
 
 .cta {
   display: inline-block;
-  padding: 0.625rem 1.25rem;
-  background: var(--ink);
+  padding: 0.75rem 1.5rem;
+  background: var(--accent);
   color: #fff;
-  border-radius: 4px;
-  text-decoration: none;
+  border-radius: var(--radius-sm);
+  font-size: 0.9375rem;
   font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 1px 2px rgba(20, 23, 28, 0.08);
+  transition: background-color 0.15s ease;
 }
 
-.cta:hover,
-.cta:focus {
-  background: #000;
+.cta:hover {
+  background: var(--accent-strong);
+  color: #fff;
 }
 
-/* --- footer ----------------------------------------------------------- */
+/* --- trust -------------------------------------------------------------- */
+
+/* The freshness line is the section's evidence, so it gets a quiet accent rule
+   to lift it out of the prose without turning it into a badge. */
+#freshness-date {
+  padding-inline-start: 0.875rem;
+  border-inline-start: 2px solid var(--accent);
+  margin-block: 1.75rem;
+  font-size: 0.9375rem;
+}
+
+/* --- footer ------------------------------------------------------------- */
 
 footer {
-  padding-top: 2rem;
+  max-width: var(--measure);
+  margin-inline: auto;
+  padding-block: 2.5rem 3.5rem;
+  border-block-start: 1px solid var(--rule);
   font-size: 0.875rem;
   color: var(--ink-muted);
+}
+
+footer strong {
+  color: var(--ink);
+  font-weight: 600;
 }
 
 footer nav {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 0.5rem 1.5rem;
+  margin-block: 1.25rem;
+}
+
+footer nav a {
+  color: var(--ink-muted);
+  text-decoration: none;
+}
+
+footer nav a:hover {
+  color: var(--accent);
+  text-decoration: underline;
 }
 
 .copyright {
-  margin-bottom: 0;
+  margin-block-end: 0;
+}
+
+/* --- responsive --------------------------------------------------------- */
+
+/* Two columns of code stop being readable well before the panes stop fitting,
+   so this collapses earlier than the panes strictly require. */
+@media (max-width: 800px) {
+  .code-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --pad: 1.125rem;
+  }
+
+  section {
+    padding-block: 3.25rem;
+  }
+
+  section + section::before {
+    margin-block-end: 3.25rem;
+  }
+
+  header {
+    padding-block: 1.25rem;
+  }
+
+  .subhead {
+    font-size: 1.0625rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition-duration: 0.01ms !important;
+  }
 }

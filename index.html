@@ -22,12 +22,15 @@
       Netherlands — with an honest, explicit error for everything we don't yet model.
     </p>
 
-    <!-- Request/response are real: the response below is the API's pinned OpenAPI
-         example (app/api/examples.py), which a test asserts byte-for-byte against
-         what POSTing this exact request returns. Regenerate it here if that test
-         ever forces a change on the API side. -->
+    <!-- Request/response are real: taken from the API's pinned OpenAPI example
+         (app/api/examples.py), which a test asserts byte-for-byte against what
+         POSTing this exact request returns. Regenerate here if that test ever
+         forces a change API-side.
+         The response is EXCERPTED, not edited: the withdrawal object below is
+         byte-accurate, and the second right is disclosed by the link under it
+         rather than silently dropped. Never abbreviate the JSON itself. -->
     <div class="code-grid">
-      <figure>
+      <figure class="pane">
         <figcaption>Request</figcaption>
         <pre><code>curl -X POST https://api.rightsclock.eu/v1/rights \
   -H "Content-Type: application/json" \
@@ -39,7 +42,7 @@
        "delivery_date":"2026-06-08"}'</code></pre>
       </figure>
 
-      <figure>
+      <figure class="pane is-truncated">
         <figcaption>Response</figcaption>
         <pre><code>{
   "disclaimer": "Legal information, not legal advice. Verify with a qualified source before relying on a deadline.",
@@ -56,22 +59,8 @@
       "jurisdiction": "DE",
       "last_reviewed": "2026-07-12",
       "notes": null
-    },
-    {
-      "right_type": "legal_guarantee",
-      "applies": true,
-      "duration_days": null,
-      "duration_years": 2,
-      "start_date": "2026-06-08",
-      "deadline_date": "2028-06-08",
-      "explanation": "For two years from delivery, the seller is liable for defects (Sachmängel). You may demand repair or replacement first; price reduction or withdrawal from the contract if that fails.",
-      "source": "BGB §§ 434, 437, 438(2) (implementing Directive (EU) 2019/771)",
-      "jurisdiction": "DE",
-      "last_reviewed": "2026-07-12",
-      "notes": "Defects appearing within the first 12 months are presumed to have existed at delivery (BGB § 477)."
-    }
-  ]
-}</code></pre>
+    },</code></pre>
+        <a class="more" href="https://api.rightsclock.eu/docs">+ 1 more right (legal_guarantee) →</a>
       </figure>
     </div>
 
@@ -100,8 +89,9 @@
          upgrades it to the live value. Keep this date in sync with the dataset. -->
     <p id="freshness-date">Legal data last reviewed: 2026-07-12</p>
 
-    <!-- TODO: point at the published LEGAL_DATA.md (lives in the RightsClockAPI repo). -->
-    <p><a href="#">Read our data-governance process</a></p>
+    <!-- Serves the raw markdown for now. A styled HTML rendering of the same
+         content could replace this later without changing the link. -->
+    <p><a href="LEGAL_DATA.md">Read our data-governance process</a></p>
   </section>
 
   <section id="pricing">
