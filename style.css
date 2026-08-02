@@ -260,6 +260,240 @@ code {
   color: #fff;
 }
 
+/* --- demo --------------------------------------------------------------- */
+
+.demo-fieldset {
+  margin: 0;
+  padding: 1.25rem 1.375rem 1.375rem;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+}
+
+/* Same quiet label treatment as the code panes' captions, so the demo reads as
+   part of the same page rather than as a form bolted onto it. */
+.demo-fieldset legend {
+  padding-inline: 0.5rem;
+  margin-inline-start: -0.5rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-muted);
+}
+
+/* The fields are gridded on a wrapper, not on the fieldset: a legend inside a
+   grid container is laid out inconsistently across browsers. */
+.demo-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.125rem 1.25rem;
+}
+
+.field label {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  margin-block-end: 0.375rem;
+}
+
+.field select,
+.field input {
+  width: 100%;
+  padding: 0.5rem 0.625rem;
+  background: var(--bg);
+  color: var(--ink);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+  font-size: 0.9375rem;
+  line-height: 1.4;
+}
+
+.field select:hover,
+.field input:hover {
+  border-color: var(--ink-muted);
+}
+
+.field-hint {
+  display: block;
+  margin-block-start: 0.375rem;
+  font-size: 0.8125rem;
+  color: var(--ink-muted);
+}
+
+/* .cta carries the look; this only adds what a <button> needs that an <a>
+   doesn't, plus the in-flight state. */
+.demo-submit {
+  margin-block-start: 1.25rem;
+  border: 0;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.demo-submit:disabled {
+  background: var(--ink-muted);
+  cursor: progress;
+}
+
+.demo-results {
+  display: grid;
+  gap: 1rem;
+  margin-block-start: 2rem;
+}
+
+.demo-results:empty {
+  margin-block-start: 0;
+}
+
+/* --- demo results ------------------------------------------------------- */
+
+.right-card {
+  padding: 1.25rem 1.375rem;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+}
+
+.right-card-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  margin-block-end: 1rem;
+}
+
+.right-card-title {
+  margin: 0;
+  font-size: 1.0625rem;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+
+.badge {
+  padding: 0.125rem 0.5rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.badge-applies {
+  background: var(--accent);
+  color: #fff;
+}
+
+.badge-excluded {
+  background: var(--surface);
+  border-color: var(--rule);
+  color: var(--ink-muted);
+}
+
+/* Borrows the freshness line's accent rule: in both places it marks the one
+   fact the surrounding text exists to support. */
+.right-deadline {
+  padding-inline-start: 0.875rem;
+  border-inline-start: 2px solid var(--accent);
+  margin-block-end: 1rem;
+}
+
+.right-deadline-label {
+  display: block;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-muted);
+}
+
+.right-deadline-date {
+  display: block;
+  font-size: 1.375rem;
+  font-weight: 650;
+  line-height: 1.3;
+  letter-spacing: -0.015em;
+}
+
+/* Rights that apply without a computable date: same block, but the phrase is a
+   sentence rather than a date, so it is set at prose scale. */
+.right-deadline-date.is-open {
+  font-size: 1.0625rem;
+}
+
+.right-window {
+  margin-block: 0.125rem 0;
+  font-size: 0.875rem;
+  color: var(--ink-muted);
+}
+
+.right-explanation {
+  margin-block-end: 1rem;
+}
+
+.right-notes {
+  padding: 0.75rem 0.875rem;
+  background: var(--surface);
+  border-radius: var(--radius-sm);
+  font-size: 0.9375rem;
+  color: var(--ink-muted);
+}
+
+.right-meta {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.25rem 1rem;
+  margin: 0;
+  padding-block-start: 1rem;
+  border-block-start: 1px solid var(--rule);
+  font-size: 0.8125rem;
+  color: var(--ink-muted);
+}
+
+.right-meta dt {
+  font-weight: 600;
+}
+
+.right-meta dd {
+  margin: 0;
+}
+
+/* Whichever block happens to end a card — meta, notes, or explanation on a
+   sparse response — shouldn't push a phantom gap against the card's padding. */
+.right-card > :last-child {
+  margin-block-end: 0;
+}
+
+.demo-disclaimer {
+  margin-block-end: 0;
+  font-size: 0.875rem;
+  color: var(--ink-muted);
+}
+
+/* One box for every non-result state — loading, out of scope, rate limited,
+   unreachable. They differ in wording, not in weight. */
+.demo-message {
+  padding: 1rem 1.125rem;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  font-size: 0.9375rem;
+}
+
+.demo-message-title {
+  margin-block-end: 0.25rem;
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.demo-message p {
+  margin-block-end: 0;
+  color: var(--ink-muted);
+}
+
+.demo-message p + p {
+  margin-block-start: 0.5rem;
+}
+
 /* --- trust -------------------------------------------------------------- */
 
 /* The freshness line is the section's evidence, so it gets a quiet accent rule
@@ -314,6 +548,12 @@ footer nav a:hover {
    so this collapses earlier than the panes strictly require. */
 @media (max-width: 800px) {
   .code-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Same collapse point, same reason: side-by-side stops being comfortable
+     well before the controls stop fitting. */
+  .demo-grid {
     grid-template-columns: 1fr;
   }
 }

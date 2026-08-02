@@ -71,7 +71,60 @@
 
   <section id="demo">
     <h2>Try it</h2>
-    <!-- interactive demo form wired in a later brief -->
+    <p>
+      This calls the live API, anonymously, from your browser. The defaults
+      below already describe a real purchase — press the button and you get the
+      actual German deadlines, not a canned example.
+    </p>
+
+    <!-- Deliberately NOT a <form>: there is no server to post to and no page to
+         navigate to, so the button is a plain type="button" driven by fetch in
+         script.js. Only the four inputs that change the answer are exposed;
+         everything else the endpoint accepts is either constant here or does
+         not move the computed deadline, and a control that does nothing would
+         be a lie about how the rules work. -->
+    <div class="demo-form">
+      <fieldset class="demo-fieldset">
+        <legend>Your purchase</legend>
+
+        <div class="demo-grid">
+          <div class="field">
+            <label for="demo-country">Buyer country</label>
+            <select id="demo-country">
+              <option value="DE" selected>Germany</option>
+              <option value="AT">Austria</option>
+              <option value="NL">Netherlands</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="demo-channel">Channel</label>
+            <select id="demo-channel">
+              <option value="online" selected>Online</option>
+              <option value="doorstep">Doorstep (off-premises)</option>
+              <option value="in_store">In-store</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="demo-purchase-date">Purchase date</label>
+            <input id="demo-purchase-date" type="date" value="2026-06-05" required>
+          </div>
+
+          <div class="field">
+            <label for="demo-delivery-date">Delivery date</label>
+            <input id="demo-delivery-date" type="date" aria-describedby="demo-delivery-hint">
+            <span class="field-hint" id="demo-delivery-hint">Optional — defaults to the purchase date.</span>
+          </div>
+        </div>
+      </fieldset>
+
+      <button type="button" id="demo-submit" class="cta demo-submit">Show my deadlines</button>
+    </div>
+
+    <!-- Live region: the answer arrives after the button is pressed, so screen
+         readers need it announced rather than silently swapped in. -->
+    <div id="demo-results" class="demo-results" aria-live="polite"></div>
   </section>
 
   <section id="trust">
