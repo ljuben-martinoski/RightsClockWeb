@@ -542,6 +542,153 @@ footer nav a:hover {
   margin-block-end: 0;
 }
 
+/* --- rendered document (legal-data.html) -------------------------------- */
+
+/* LEGAL_DATA.md is injected into .doc at runtime, so these rules have to style
+   whatever markdown that document happens to use rather than a fixed shell.
+   Same measure, same tokens, same restraint as the landing page: this is a
+   sub-page of one site, not a second design. */
+
+.doc {
+  max-width: var(--measure);
+  margin-inline: auto;
+  padding-block: 3.5rem 4.5rem;
+  /* Statute citations and a bare GitHub URL both run past a phone's width.
+     Breaking them beats a page that scrolls sideways. */
+  overflow-wrap: break-word;
+}
+
+/* The document's own first heading is this page's h1, and the header rule above
+   it already provides the separation. */
+.doc > :first-child {
+  margin-block-start: 0;
+}
+
+.doc > :last-child {
+  margin-block-end: 0;
+}
+
+/* The shipped default inside .doc — what a visitor without JavaScript, or a
+   failed fetch, sees. Muted, so it reads as page furniture rather than as the
+   document it stands in for. */
+.doc-fallback {
+  color: var(--ink-muted);
+}
+
+.doc h2 {
+  margin-block-start: 3rem;
+}
+
+.doc h3 {
+  font-size: 1.0625rem;
+  font-weight: 650;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  margin-block: 2.25rem 0.75rem;
+}
+
+.doc h4 {
+  font-size: 0.9375rem;
+  font-weight: 650;
+  margin-block: 1.75rem 0.5rem;
+}
+
+.doc hr {
+  height: 0;
+  border: 0;
+  border-block-start: 1px solid var(--rule);
+  margin-block: 3rem;
+}
+
+/* An <hr> in the source has already separated the two sections, so the heading
+   after it doesn't stack its own gap on top. */
+.doc hr + :is(h2, h3) {
+  margin-block-start: 0;
+}
+
+/* The default 700 reads heavy against this body face; the rest of the site sets
+   its emphasis at 600–650. */
+.doc strong {
+  font-weight: 650;
+}
+
+.doc :is(ul, ol) {
+  margin-block: 0 1rem;
+  padding-inline-start: 1.5rem;
+}
+
+.doc li {
+  margin-block-end: 0.5rem;
+}
+
+.doc li:last-child {
+  margin-block-end: 0;
+}
+
+.doc li > :is(ul, ol) {
+  margin-block: 0.5rem 0;
+}
+
+/* pre is margin: 0 so the hero's figures can control their own spacing; in
+   running prose it needs its own. */
+.doc pre {
+  margin-block: 0 1.5rem;
+}
+
+/* Inline code only. The fenced form is already framed by the pre around it and
+   would otherwise double up on padding and border. */
+.doc :not(pre) > code {
+  padding: 0.1em 0.35em;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  /* em, not rem: keeps its ratio to whatever text it sits inside. */
+  font-size: 0.875em;
+}
+
+.doc blockquote {
+  margin-block: 0 1.5rem;
+  margin-inline: 0;
+  padding-inline-start: 1rem;
+  border-inline-start: 2px solid var(--rule);
+  color: var(--ink-muted);
+}
+
+.doc blockquote > :last-child {
+  margin-block-end: 0;
+}
+
+/* marked emits a bare <table>; the page script wraps each one in this, so a
+   table too wide for the screen scrolls inside its own box rather than
+   widening the page. */
+.doc-table-wrap {
+  margin-block: 0 1.5rem;
+  overflow-x: auto;
+}
+
+.doc table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+}
+
+.doc :is(th, td) {
+  padding: 0.625rem 0.875rem;
+  border-block-end: 1px solid var(--rule);
+  text-align: start;
+  vertical-align: top;
+}
+
+/* The same quiet uppercase label used by the code-pane captions and the demo
+   fieldset legend. */
+.doc th {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-muted);
+}
+
 /* --- responsive --------------------------------------------------------- */
 
 /* Two columns of code stop being readable well before the panes stop fitting,
@@ -573,6 +720,10 @@ footer nav a:hover {
 
   header {
     padding-block: 1.25rem;
+  }
+
+  .doc {
+    padding-block: 2.5rem 3.25rem;
   }
 
   .subhead {

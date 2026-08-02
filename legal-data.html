@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Data-governance process — RightsClock</title>
+<meta name="description" content="How RightsClock's legal dataset is sourced, reviewed, and kept current — the full data-governance process.">
+<link rel="stylesheet" href="style.css">
+
+<header>
+  <a class="wordmark" href="/">RightsClock</a>
+  <nav>
+    <!-- Root-absolute, unlike the homepage's bare "#demo": those sections live
+         on the homepage, so a same-page anchor would be dead here. -->
+    <a href="/#demo">Demo</a>
+    <a href="/#trust">Trust</a>
+    <a href="/#pricing">Pricing</a>
+  </nav>
+</header>
+
+<main>
+
+  <!-- LEGAL_DATA.md is the only copy of this document. The page fetches and
+       renders it at runtime rather than holding a second copy in HTML: two
+       copies drift, and a document about keeping data current is the last place
+       that should happen. The document's own "# " heading becomes this page's
+       h1, so the shell deliberately contributes no heading of its own. -->
+  <article class="doc" id="legal-doc">
+    <!-- A shipped default, not a placeholder. This is what a visitor without
+         JavaScript sees, and what stays on screen if anything below fails —
+         the document remains reachable either way. -->
+    <p class="doc-fallback">
+      If this page doesn't load, read the raw document:
+      <a href="/LEGAL_DATA.md">LEGAL_DATA.md</a>
+    </p>
+  </article>
+
+</main>
+
+<footer>
+  <p><strong>Legal information, not legal advice.</strong></p>
+  <nav>
+    <!-- Drafts pending the UG formation — do not link publicly until reviewed. -->
+    <a href="#">Impressum</a>
+    <a href="#">Datenschutzerklärung</a>
+    <a href="#">Terms</a>
+  </nav>
+  <p class="copyright">© 2026 RightsClock</p>
+</footer>
+
+<!-- marked v18.0.7 — the official lib/marked.umd.js from the npm package,
+     vendored byte-for-byte (sha256 7a1f8c5e7226b75ff16644bdb2c0130d2ae7371e7ea3106c2d6dac77ab0ff7b6).
+     Not loaded from a CDN, on purpose: a third-party request would have to be
+     declared in the Datenschutzerklärung, and it would tie this page's
+     reliability to someone else's uptime. Self-hosted, nothing to disclose. -->
+<script src="/vendor/marked.min.js"></script>
+<script>
+  // Renders LEGAL_DATA.md into the page.
+  //
+  // Same discipline as the freshness date in script.js: the HTML already ships
+  // something true and useful — a link to the raw document — and this code only
+  // ever *upgrades* it. Every failure path (script blocked, 404, offline,
+  // empty body) leaves that link standing, because a blank page is worse than a
+  // plain one. The paths below are root-absolute, so opening this file straight
+  // from disk shows the fallback; serve it over HTTP to see it render.
+
+  const DOC_URL = "/LEGAL_DATA.md";
+
+  // marked emits a bare <table>. Giving each one its own scroll box keeps a
+  // wide table from pushing the whole page sideways on a phone.
+  function wrapTables(container) {
+    for (const table of container.querySelectorAll("table")) {
+      const wrap = document.createElement("div");
+      wrap.className = "doc-table-wrap";
+      table.replaceWith(wrap);
+      wrap.append(table);
+    }
+  }
+
+  async function renderLegalDoc() {
+    const container = document.getElementById("legal-doc");
+    const parser = window.marked;
+    if (!container || !parser || typeof parser.parse !== "function") return;
+
+    container.setAttribute("aria-busy", "true");
+
+    try {
+      const response = await fetch(DOC_URL, {
+        headers: { Accept: "text/markdown, text/plain" },
+      });
+
+      // Same origin, same repo, so a non-ok here means the file moved or the
+      // deploy is incomplete — either way there is nothing better to show than
+      // the link already on screen.
+      if (!response.ok) return;
+
+      const html = parser.parse(await response.text());
+
+      // An empty render would replace a working link with nothing at all.
+      if (typeof html !== "string" || html.trim() === "") return;
+
+      // innerHTML here, and deliberately the opposite of the rule script.js
+      // follows for the demo. There the strings come from an API response; this
+      // input is a file committed to this repo and served from this origin, so
+      // it is our own markup by definition. Rendering markdown *is* producing
+      // HTML — a sanitizer would only be guarding us against ourselves.
+      container.innerHTML = html;
+      wrapTables(container);
+    } catch {
+      // Deliberately empty: see the note at the top — the fallback link stays.
+    } finally {
+      container.removeAttribute("aria-busy");
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", renderLegalDoc);
+</script>
