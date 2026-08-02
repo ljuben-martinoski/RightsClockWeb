@@ -82,6 +82,16 @@ live site.
   formation, not to be linked publicly until reviewed.
 - The pricing section is a stub ("free while in preview"); full tiers come later.
 
+## License
+
+Proprietary — **all rights reserved**. See [`LICENSE`](LICENSE). This is not open-source
+code: no part of this repository may be reproduced, distributed, modified or transmitted
+without prior written permission from the copyright owner.
+
+One exception, by nature: `vendor/marked.min.js` is third-party code by MarkedJS and
+Christopher Jeffrey, distributed under the MIT License, and stays under those terms. Its
+license header is preserved at the top of the file — leave it there.
+
 ---
 
-**Legal information, not legal advice.** © 2026 RightsClock
+**Legal information, not legal advice.** © 2026 Martinoski Ljuben
