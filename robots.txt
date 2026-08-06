@@ -1,0 +1,33 @@
+# Crawl rules for rightsclock.eu.
+#
+# WHY this file exists at all: Cloudflare appends its own managed block (the
+# content signals and AI-crawler rules below the marker) to whatever is served
+# at this path. With no real file here, Pages answered /robots.txt with the
+# index.html fallback and Cloudflare appended its block to *that* — a robots.txt
+# served as text/html with a full HTML page inside it. Google is entitled to
+# disregard a robots.txt that isn't text/plain, which meant none of those rules
+# were reliably in force. A plain file at this path is what makes them count.
+#
+# Groups sharing a user-agent are merged by crawlers, and the longest matching
+# rule wins, so the Disallow lines below survive the managed block's "Allow: /".
+
+User-agent: *
+Allow: /
+
+# Repository files that Cloudflare Pages publishes because they sit in the
+# deploy root, but which are not pages and are linked from nowhere on the site.
+# README.md is the internal engineering doc: it names the API's anonymous rate
+# limit, the deploy pipeline, API-side file paths, and which legal pages are
+# still unpublished. None of that belongs in a search index under this domain.
+#
+# This hides them from search, not from the web — both are still served to
+# anyone who requests them. Renaming README.md is the only way to stop Pages
+# publishing it, at the cost of GitHub no longer rendering it on the repo page.
+Disallow: /README.md
+Disallow: /LICENSE
+
+# LEGAL_DATA.md is deliberately NOT disallowed: legal-data.html fetches it at
+# runtime to render the page, and a crawler that can't fetch it sees an empty
+# document. It is public by design.
+
+Sitemap: https://rightsclock.eu/sitemap.xml

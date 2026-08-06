@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Page not found — RightsClock</title>
+
+<!-- WHY this page exists: Cloudflare Pages serves index.html with a 200 for
+     every unmatched path unless a 404.html sits in the deploy root. Every typo,
+     stale link and scanner probe was therefore an indexable page returning
+     "success". Pages picks this file up by name and answers 404 with it — no
+     configuration, no redirect rule.
+
+     Noindex is belt-and-braces: a correct 404 status already keeps this out of
+     the index, but the header stops the page itself becoming a search result if
+     it is ever reached some other way. -->
+<meta name="robots" content="noindex">
+
+<link rel="stylesheet" href="/style.css">
+
+<header>
+  <a class="wordmark" href="/">RightsClock</a>
+  <nav>
+    <a href="/#demo">Demo</a>
+    <a href="/#trust">Trust</a>
+    <a href="/#pricing">Pricing</a>
+  </nav>
+</header>
+
+<main>
+
+  <section id="hero">
+    <h1>That page isn't here.</h1>
+    <p class="subhead">
+      The address you followed doesn't match anything on this site. It may have
+      moved, or it may never have existed.
+    </p>
+
+    <!-- Every destination offered here is a real, shipped page. A 404 that
+         guesses at what the visitor wanted and sends them somewhere unrelated
+         is worse than one that admits the address is dead. -->
+    <p>
+      <a class="cta" href="/">Back to the homepage →</a>
+    </p>
+
+    <p>
+      Looking for something specific? The
+      <a href="/legal-data.html">data-governance process</a> and the
+      <a href="https://api.rightsclock.eu/docs">API documentation</a> are the two
+      places most links point.
+    </p>
+  </section>
+
+</main>
+
+<footer>
+  <p><strong>Legal information, not legal advice.</strong></p>
+  <nav>
+    <!-- Drafts pending the UG formation — do not link publicly until reviewed. -->
+    <a href="#">Impressum</a>
+    <a href="#">Datenschutzerklärung</a>
+    <a href="#">Terms</a>
+  </nav>
+  <p class="copyright">© 2026 RightsClock</p>
+</footer>
