@@ -16,9 +16,14 @@ This repo is the website only. The API is a **separate service**, deployed indep
 | `index.html` | Landing page: hero with a real request/response, live demo form, trust section, pricing stub |
 | `legal-data.html` | Shell page that fetches and renders `LEGAL_DATA.md` at runtime |
 | `LEGAL_DATA.md` | The data-governance document — the single copy of that content |
-| `style.css` | All styling for both pages |
+| `404.html` | Not-found page. Pages picks it up by name and answers 404 with it |
+| `style.css` | All styling for every page |
 | `script.js` | Freshness date upgrade + the interactive demo |
+| `legal-data.js` | The `LEGAL_DATA.md` renderer, used only by `legal-data.html` |
 | `vendor/marked.min.js` | Vendored [marked](https://github.com/markedjs/marked) v18.0.7, used only by `legal-data.html` |
+| `robots.txt` | Crawl rules. Cloudflare appends its managed content-signals block |
+| `_headers` | CSP and friends. Consumed by Pages, never served |
+| `sitemap.xml` | The two indexable pages |
 
 ## Running it locally
 
@@ -65,6 +70,11 @@ These aren't style preferences — each one is load-bearing:
   from a neighbouring country's rules, and the demo presents that as designed behaviour.
 - **Dates are handled in UTC.** The API returns time-zone-less calendar dates; parsing and
   formatting both in UTC stops a deadline sliding a day for visitors west of Greenwich.
+- **No inline scripts, ever.** `_headers` ships a CSP of `script-src 'self'` with no
+  `'unsafe-inline'` and no hashes. A `<script>` block added to any page will silently not
+  run in production while working perfectly from `file://`. Put it in a `.js` file. The same
+  applies to `style=""` attributes and `onclick=` handlers. Any new external host a page
+  talks to must be added to `connect-src` in `_headers` or the `fetch` is blocked.
 - **No CDN, no external requests.** A third-party request would have to be declared in the
   Datenschutzerklärung and would tie the page's reliability to someone else's uptime. That
   is why marked is vendored.

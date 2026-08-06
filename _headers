@@ -1,0 +1,42 @@
+# Response headers for Cloudflare Pages.
+#
+# Pages consumes this file and strips it from the deploy, so it is never served
+# and never crawlable. Syntax: a path pattern at column 0, then indented
+# `Name: value` lines. Comments must start at column 0 — an indented `#` is not
+# documented as a comment, and a misparse here fails silently, costing every
+# header below. That is why the notes are all up here and the block is bare.
+#
+# Pages already sends `X-Content-Type-Options: nosniff` and
+# `Referrer-Policy: strict-origin-when-cross-origin` on every response; they are
+# deliberately not repeated below, to avoid duplicate headers.
+#
+# The CSP lists every source the pages actually use and nothing else, verified
+# against the markup rather than copied from a template:
+#
+#   script-src  — /script.js, /legal-data.js, /vendor/marked.min.js. All
+#                 same-origin, and no inline script remains in the repo
+#                 (legal-data.html's block was moved into legal-data.js for
+#                 exactly this reason), so no 'unsafe-inline' and no hash.
+#   style-src   — /style.css only. No style="" attributes anywhere.
+#   connect-src — the API for /v1/ready and /v1/rights, plus 'self' for the
+#                 /LEGAL_DATA.md fetch that renders the governance page.
+#                 REMEMBER: a new API host must be added here or fetch fails.
+#   img-src     — nothing today; 'self' and data: are here so adding the
+#                 og:image the homepage comment asks for doesn't need a policy
+#                 change first.
+#   form-action — 'none', and true: the demo is deliberately not a <form>.
+#
+# X-Frame-Options duplicates frame-ancestors for browsers old enough not to
+# enforce CSP.
+#
+# HSTS is one year but deliberately WITHOUT includeSubDomains or preload. Both
+# are effectively irreversible once a browser or the preload list has cached
+# them, and includeSubDomains would bind api.rightsclock.eu and every future
+# subdomain to HTTPS-only. Add them once you have confirmed that holds for all
+# of them — not before.
+
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self' https://api.rightsclock.eu; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; upgrade-insecure-requests
+  X-Frame-Options: DENY
+  Strict-Transport-Security: max-age=31536000
+  Permissions-Policy: geolocation=(), camera=(), microphone=(), payment=(), usb=()
