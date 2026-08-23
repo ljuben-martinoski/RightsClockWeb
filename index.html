@@ -8,13 +8,17 @@
 
 <!-- Social-preview tags. Title/description must stay byte-identical to the
      <title> and meta description above — update all three together.
-     No og:image yet: nothing is hosted, and a broken image reference is worse
-     than none. Add one here once a real image exists. -->
+     og:image is an absolute URL (required — relative paths don't resolve for
+     scrapers) to a 1200x630 PNG in the repo root. -->
 <meta property="og:title" content="RightsClock — Know your exact consumer-rights deadline.">
 <meta property="og:description" content="Cited, maintained EU consumer-rights data for Germany, Austria and the Netherlands, as a REST API.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://rightsclock.eu/">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="https://rightsclock.eu/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://rightsclock.eu/og-image.png">
 <meta name="msvalidate.01" content="9DA0D9421DCAF50027F5DF16E9B37A4A" />
 
 <link rel="stylesheet" href="style.css">
