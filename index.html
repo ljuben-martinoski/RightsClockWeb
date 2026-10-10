@@ -47,11 +47,10 @@
       Netherlands — with an honest, explicit error for everything we don't yet model.
     </p>
 
-    <!-- Request/response are real: the response is a live capture of POSTing
-         this exact request (2026-10-10), pretty-printed. It is the same request
-         as the API's de_online_electronics OpenAPI example, but nothing in this
-         repo checks it: this is a hand-maintained copy that drifts whenever a
-         review moves last_reviewed or the API adds a field. Re-capture it then.
+    <!-- Request/response are real: taken from the API's pinned OpenAPI example
+         (app/api/examples.py), which a test asserts byte-for-byte against what
+         POSTing this exact request returns. Regenerate here if that test ever
+         forces a change API-side.
          The response is EXCERPTED, not edited: the withdrawal object below is
          byte-accurate, and the second right is disclosed by the link under it
          rather than silently dropped. Never abbreviate the JSON itself. -->
@@ -78,7 +77,6 @@
       "applies": true,
       "duration_days": 14,
       "duration_years": null,
-      "repair_extension_months": null,
       "start_date": "2026-06-08",
       "deadline_date": "2026-06-22",
       "explanation": "You may cancel a distance or off-premises purchase within 14 days of receiving the goods, without giving any reason.",

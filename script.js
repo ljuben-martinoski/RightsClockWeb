@@ -111,6 +111,14 @@ function durationLabel(right) {
   return "";
 }
 
+// Null or a missing key means no extension was applied. Number() folds both to
+// 0 or NaN, and a 0 must never print as "+ 0 months" either.
+function repairExtensionLabel(right) {
+  const months = Number(right.repair_extension_months);
+  if (!(months > 0)) return "";
+  return `${pluralise(months, "month")} repair extension`;
+}
+
 function buildRightCard(right) {
   const card = el("article", "right-card");
   const applies = right.applies === true;
@@ -135,15 +143,20 @@ function buildRightCard(right) {
       block.append(el("span", "right-deadline-label", "Deadline"));
       block.append(dateElement("right-deadline-date", right.deadline_date));
 
+      // deadline_date = start + base period + repair_extension_months, so a
+      // window line that left the extension out would contradict the date
+      // printed right above it.
       const duration = durationLabel(right);
+      const extension = repairExtensionLabel(right);
       const from = present(right.start_date) ? formatDate(right.start_date) : "";
-      if (duration && from) {
-        block.append(el("p", "right-window", `${duration} from ${from}`));
-      } else if (duration) {
-        block.append(el("p", "right-window", duration));
-      } else if (from) {
-        block.append(el("p", "right-window", `Runs from ${from}`));
+      const line = el("p", "right-window");
+      if (duration) line.append(duration);
+      if (extension) {
+        if (duration) line.append(" + ");
+        line.append(el("strong", "right-extension", extension));
       }
+      if (from) line.append(duration || extension ? ` from ${from}` : `Runs from ${from}`);
+      if (line.hasChildNodes()) block.append(line);
     } else {
       // Real and correct, not a gap in the data: the right applies, but the law
       // ties it to the product's expected lifespan, so there is no date to give.
@@ -277,6 +290,11 @@ function buildRequestBody() {
   // Omit the key rather than sending null and inviting a validation error.
   const delivery = readValue("demo-delivery-date");
   if (delivery) body.delivery_date = delivery;
+
+  // Sent only when ticked. false is the API's default, so an unticked box
+  // omits the key instead of adding noise to every request.
+  const repaired = document.getElementById("demo-repaired");
+  if (repaired && repaired.checked) body.repaired = true;
 
   return body;
 }
