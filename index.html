@@ -47,10 +47,10 @@
       Netherlands — with an honest, explicit error for everything we don't yet model.
     </p>
 
-    <!-- Request/response are real: taken from the API's pinned OpenAPI example
-         (app/api/examples.py), which a test asserts byte-for-byte against what
-         POSTing this exact request returns. Regenerate here if that test ever
-         forces a change API-side.
+        <!-- Request/response are real: the response is a live capture of POSTing
+         this exact request (2026-10-10), pretty-printed. Nothing in this repo
+         checks it — it's a hand-maintained copy that drifts whenever a review
+         moves last_reviewed or the API adds a field. Re-capture it then.
          The response is EXCERPTED, not edited: the withdrawal object below is
          byte-accurate, and the second right is disclosed by the link under it
          rather than silently dropped. Never abbreviate the JSON itself. -->
@@ -77,6 +77,7 @@
       "applies": true,
       "duration_days": 14,
       "duration_years": null,
+      "repair_extension_months": null,
       "start_date": "2026-06-08",
       "deadline_date": "2026-06-22",
       "explanation": "You may cancel a distance or off-premises purchase within 14 days of receiving the goods, without giving any reason.",
@@ -130,16 +131,23 @@
               <option value="in_store">In-store</option>
             </select>
           </div>
-
+          <!-- Default is on/after 2026-07-31 (the DE repair-extension cutoff) so
+          ticking "repaired" actually changes the guarantee deadline. Don't
+          move it earlier without reason. -->
           <div class="field">
             <label for="demo-purchase-date">Purchase date</label>
-            <input id="demo-purchase-date" type="date" value="2026-06-05" required>
+            <input id="demo-purchase-date" type="date" value="2026-08-03" required>
           </div>
 
           <div class="field">
             <label for="demo-delivery-date">Delivery date</label>
             <input id="demo-delivery-date" type="date" aria-describedby="demo-delivery-hint">
             <span class="field-hint" id="demo-delivery-hint">Optional — defaults to the purchase date.</span>
+          </div>
+          <div class="field-check">
+            <input id="demo-repaired" type="checkbox" aria-describedby="demo-repaired-hint">
+            <label for="demo-repaired">Goods were repaired (Nachbesserung/Verbesserung)</label>
+            <span class="field-hint" id="demo-repaired-hint">If a defect was fixed by repair, German and Austrian guarantees extend once by 12 months.</span>
           </div>
         </div>
       </fieldset>
